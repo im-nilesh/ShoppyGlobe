@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ProductCard from "../components/ProductCard";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -30,6 +31,9 @@ function Home() {
   return (
     <>
       <h1>Home Page</h1>
+      {products.map((product) => {
+        return <ProductCard key={product.id} product={product} />;
+      })}
     </>
   );
 }
