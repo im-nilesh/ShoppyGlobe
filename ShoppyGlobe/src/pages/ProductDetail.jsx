@@ -13,7 +13,7 @@ function ProductDetails() {
         const reponse = await fetch(`https://dummyjson.com/products/${id}`);
         const data = await reponse.json();
         setProduct(data);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         setError(error.message);
       } finally {
