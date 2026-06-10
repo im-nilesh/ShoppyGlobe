@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-
+import { Link } from "react-router-dom";
 import {
   removeFromCart,
   clearCart,
@@ -56,6 +56,9 @@ function Cart() {
       >
         Clear Cart
       </button>
+      <Link to="/checkout">
+        <button>Proceed To Checkout</button>
+      </Link>
     </>
   );
 }
