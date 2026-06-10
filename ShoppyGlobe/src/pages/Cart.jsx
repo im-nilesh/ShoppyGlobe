@@ -1,12 +1,17 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { removeFromCart, clearCart } from "../redux/cartSlice";
+import {
+  removeFromCart,
+  clearCart,
+  incrementQuantity,
+  decrementQuantity,
+} from "../redux/cartSlice";
 function Cart() {
   const cart = useSelector((state) => state.cart);
   console.log(cart);
   const dispatch = useDispatch();
   const total = cart.reduce((acc, product) => {
-    return acc + product.price;
+    return acc + product.price * product.quantity;
   }, 0);
 
   return (
@@ -18,6 +23,21 @@ function Cart() {
           <div key={product.id}>
             <h2>{product.title}</h2>
             <h3>{product.price}</h3>
+            <button
+              onClick={() => {
+                dispatch(decrementQuantity(product.id));
+              }}
+            >
+              -
+            </button>
+            <span>{product.quantity}</span>
+            <button
+              onClick={() => {
+                dispatch(incrementQuantity(product.id));
+              }}
+            >
+              +
+            </button>
             <button
               onClick={() => {
                 dispatch(removeFromCart(product.id));
