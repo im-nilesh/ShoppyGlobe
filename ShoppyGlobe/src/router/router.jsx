@@ -1,8 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
-import Cart from "../pages/Cart";
-import Checkout from "../pages/Checkout";
-import ProductDetails from "../pages/ProductDetail";
+import { lazy } from "react";
+
+const Home = lazy(() => import("../pages/Home"));
+const Cart = lazy(() => import("../pages/Cart"));
+const Checkout = lazy(() => import("../pages/Checkout"));
+const ProductDetail = lazy(() => import("../pages/ProductDetail"));
+
 import NotFound from "../pages/NotFound";
 import Layout from "../components/Layout";
 
@@ -21,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/product/:id",
-        element: <ProductDetails />,
+        element: <ProductDetail />,
       },
       {
         path: "*",

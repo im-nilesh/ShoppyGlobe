@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-function ProductDetails() {
+function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,4 +38,4 @@ function ProductDetails() {
     </>
   );
 }
-export default ProductDetails;
+export default ProductDetail;
