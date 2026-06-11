@@ -27,7 +27,7 @@ function CartItem({ product }) {
         </p>
       </div>
       <div className="flex items-center gap-3">
-        // Decrease quantity of selected product
+        {/* // Decrease quantity of selected product */}
         <button
           onClick={() => {
             dispatch(decrementQuantity(product.id));
@@ -39,7 +39,7 @@ function CartItem({ product }) {
         <span className="text-lg font-semibold min-w-[30px] text-center">
           {product.quantity}
         </span>
-        // Increase quantity of selected product
+        {/* // Increase quantity of selected product */}
         <button
           onClick={() => {
             dispatch(incrementQuantity(product.id));
@@ -49,7 +49,7 @@ function CartItem({ product }) {
           +
         </button>
       </div>
-      // Remove product from cart
+      {/* // Remove product from cart */}
       <button
         onClick={() => {
           dispatch(removeFromCart(product.id));

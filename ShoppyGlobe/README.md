@@ -1,16 +1,151 @@
-# React + Vite
+# ShoppyGlobe - E-Commerce Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Overview
 
-Currently, two official plugins are available:
+ShoppyGlobe is a React-based e-commerce application developed as part of the React Project Assignment. The application allows users to browse products, view product details, add products to a shopping cart, manage quantities, search for products, and complete a checkout process.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The project is built using React, Redux Toolkit, React Router, Tailwind CSS, and Vite.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+### Product Management
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Fetches product data from DummyJSON API.
+- Displays a list of products.
+- Displays detailed information for individual products.
+- Handles API loading and error states.
+
+### Shopping Cart
+
+- Add products to cart.
+- Remove products from cart.
+- Increase and decrease product quantities.
+- Prevent quantity from going below 1.
+- Automatically calculate cart totals.
+
+### Search Functionality
+
+- Search products using Redux state.
+- Real-time filtering of product list.
+
+### Checkout
+
+- Customer details form.
+- Order summary section.
+- Total order calculation.
+- Place Order functionality.
+- Cart is cleared after order placement.
+- Automatic redirection to Home page after successful order.
+
+### Routing
+
+- Home Page
+- Product Detail Page
+- Cart Page
+- Checkout Page
+- 404 Not Found Page
+
+### Performance Optimization
+
+- React.lazy for code splitting.
+- Suspense for lazy-loaded components.
+- Lazy loading for product images.
+
+### Responsive Design
+
+- Responsive layouts using Tailwind CSS.
+- Mobile, tablet, and desktop friendly UI.
+
+---
+
+## Technologies Used
+
+- React
+- Redux Toolkit
+- React Router DOM
+- Tailwind CSS
+- Vite
+- JavaScript (ES6+)
+- DummyJSON API
+
+## Installation
+
+1. Clone the repository
+
+```bash
+git clone YOUR_GITHUB_REPOSITORY_LINK
+```
+
+2. Navigate to the project folder
+
+```bash
+cd shoppyglobe
+```
+
+3. Install dependencies
+
+```bash
+npm install
+```
+
+4. Run the development server
+
+```bash
+npm run dev
+```
+
+5. Open the application in your browser
+
+```text
+http://localhost:5173
+```
+
+---
+
+## API Used
+
+DummyJSON Products API
+
+```text
+https://dummyjson.com/products
+```
+
+---
+
+## Assignment Requirements Covered
+
+- React Components
+- Props
+- Custom Hooks
+- useEffect Data Fetching
+- Error Handling
+- Redux State Management
+- Search Feature using Redux
+- Add to Cart Functionality
+- Remove from Cart Functionality
+- Quantity Management
+- React Router (createBrowserRouter)
+- Dynamic Routes
+- React Lists and Keys
+- React.lazy
+- Suspense
+- Lazy Loading Images
+- Checkout Functionality
+- Responsive Design
+- 404 Error Page
+
+---
+
+## GitHub Repository
+
+Repository Link:
+
+---
+
+## Author
+
+Nilesh D
+
+React Project Assignment - ShoppyGlobe E-Commerce Application

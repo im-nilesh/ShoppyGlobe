@@ -51,7 +51,7 @@ function Cart() {
               <span>Total</span>
               <span className="text-blue-600">₹{total.toFixed(2)}</span>
             </div>
-            // Clear all products from cart
+            {/* Clear all products from cart */}
             <button
               onClick={() => {
                 dispatch(clearCart());
