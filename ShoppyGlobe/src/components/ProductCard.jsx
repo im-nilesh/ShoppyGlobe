@@ -29,7 +29,7 @@ function ProductCard({ product }) {
       <div className="p-4 pt-0">
         <button
           onClick={() => dispatch(addToCart(product))}
-          className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition"
+          className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition cursor-pointer"
         >
           Add To Cart
         </button>
