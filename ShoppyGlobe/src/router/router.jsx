@@ -5,8 +5,8 @@ const Home = lazy(() => import("../pages/Home"));
 const Cart = lazy(() => import("../pages/Cart"));
 const Checkout = lazy(() => import("../pages/Checkout"));
 const ProductDetail = lazy(() => import("../pages/ProductDetail"));
+const NotFound = lazy(() => import("../pages/NotFound"));
 
-import NotFound from "../pages/NotFound";
 import Layout from "../components/Layout";
 
 const router = createBrowserRouter([

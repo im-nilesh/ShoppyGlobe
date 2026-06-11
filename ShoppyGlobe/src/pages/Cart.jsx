@@ -1,11 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  removeFromCart,
-  clearCart,
-  incrementQuantity,
-  decrementQuantity,
-} from "../redux/cartSlice";
+import { clearCart } from "../redux/cartSlice";
+import CartItem from "../components/CartItem";
+
 function Cart() {
   const cart = useSelector((state) => state.cart);
   console.log(cart);
@@ -19,34 +16,7 @@ function Cart() {
       <h1>Cart</h1>
 
       {cart.map((product) => {
-        return (
-          <div key={product.id}>
-            <h2>{product.title}</h2>
-            <h3>{product.price}</h3>
-            <button
-              onClick={() => {
-                dispatch(decrementQuantity(product.id));
-              }}
-            >
-              -
-            </button>
-            <span>{product.quantity}</span>
-            <button
-              onClick={() => {
-                dispatch(incrementQuantity(product.id));
-              }}
-            >
-              +
-            </button>
-            <button
-              onClick={() => {
-                dispatch(removeFromCart(product.id));
-              }}
-            >
-              Remove From Cart
-            </button>
-          </div>
-        );
+        return <CartItem key={product.id} product={product} />;
       })}
       <h2>Total: {total}</h2>
       <button

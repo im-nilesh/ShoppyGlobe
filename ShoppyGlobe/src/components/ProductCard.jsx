@@ -1,4 +1,3 @@
-import "../components/ProductCard.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
