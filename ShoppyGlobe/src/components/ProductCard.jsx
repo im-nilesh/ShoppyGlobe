@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 
 function ProductCard({ product }) {
+  // Redux dispatch function for cart actions
   const dispatch = useDispatch();
 
   return (
@@ -28,6 +29,7 @@ function ProductCard({ product }) {
 
       <div className="p-4 pt-0">
         <button
+          // Add selected product to cart
           onClick={() => dispatch(addToCart(product))}
           className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition cursor-pointer"
         >

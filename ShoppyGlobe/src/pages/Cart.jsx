@@ -4,9 +4,13 @@ import { clearCart } from "../redux/cartSlice";
 import CartItem from "../components/CartItem";
 
 function Cart() {
+  // Get cart items from Redux store
   const cart = useSelector((state) => state.cart);
-  console.log(cart);
+  // console.log(cart);
+
   const dispatch = useDispatch();
+
+  // Calculate total cart value
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.quantity;
   }, 0);
@@ -39,17 +43,15 @@ function Cart() {
           {/* Order Summary */}
           <div className="bg-white rounded-xl shadow-md p-6 h-fit sticky top-24">
             <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
-
             <div className="flex justify-between mb-4">
               <span>Total Items</span>
               <span>{cart.length}</span>
             </div>
-
             <div className="border-t pt-4 flex justify-between text-xl font-bold">
               <span>Total</span>
               <span className="text-blue-600">₹{total.toFixed(2)}</span>
             </div>
-
+            // Clear all products from cart
             <button
               onClick={() => {
                 dispatch(clearCart());
@@ -58,7 +60,6 @@ function Cart() {
             >
               Clear Cart
             </button>
-
             <Link to="/checkout">
               <button className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
                 Proceed To Checkout

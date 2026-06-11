@@ -5,11 +5,14 @@ function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // Extract product ID from URL parameters
   const { id } = useParams();
 
+  // Fetch individual product details whenever ID changes
   useEffect(() => {
     async function fetchProductDetails() {
       try {
+        // Call DummyJSON API to get product details
         const reponse = await fetch(`https://dummyjson.com/products/${id}`);
         const data = await reponse.json();
         setProduct(data);

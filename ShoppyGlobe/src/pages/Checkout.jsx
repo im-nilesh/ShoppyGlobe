@@ -27,63 +27,82 @@ function Checkout() {
   }
 
   return (
-    <div>
-      <h1>Checkout</h1>
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold mb-8">Checkout</h1>
 
-      <div>
-        <h2>User Details</h2>
+      <div className="grid lg:grid-cols-2 gap-8">
+        {/* Customer Details */}
+        <div className="bg-white rounded-xl shadow-md p-6">
+          <h2 className="text-2xl font-bold mb-6">Customer Details</h2>
 
-        <input
-          type="text"
-          placeholder="Enter Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Enter Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-        <br />
-        <br />
+            <input
+              type="email"
+              placeholder="Enter Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-        <input
-          type="email"
-          placeholder="Enter Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+            <textarea
+              placeholder="Enter Address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              rows="5"
+              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
 
-        <br />
-        <br />
+        {/* Order Summary */}
+        <div className="bg-white rounded-xl shadow-md p-6">
+          <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
 
-        <textarea
-          placeholder="Enter Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-      </div>
+          {cart.length === 0 ? (
+            <h3 className="text-gray-500">Your Cart is Empty</h3>
+          ) : (
+            <div className="space-y-4">
+              {cart.map((product) => (
+                <div key={product.id} className="border-b pb-4">
+                  <h4 className="font-semibold">{product.title}</h4>
 
-      <hr />
+                  <p className="text-gray-600">Price: ₹{product.price}</p>
 
-      <div>
-        <h2>Order Summary</h2>
+                  <p className="text-gray-600">Quantity: {product.quantity}</p>
 
-        {cart.length === 0 ? (
-          <h3>Your Cart is Empty</h3>
-        ) : (
-          cart.map((product) => (
-            <div key={product.id}>
-              <h4>{product.title}</h4>
-              <p>Price: ₹{product.price}</p>
-              <p>Quantity: {product.quantity}</p>
-              <p>Subtotal: ₹{product.price * product.quantity}</p>
+                  <p className="font-medium">
+                    Subtotal: ₹{product.price * product.quantity}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))
-        )}
+          )}
 
-        <h2>Total: ₹{total}</h2>
+          <div className="border-t mt-6 pt-6 flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Total</h2>
+
+            <h2 className="text-3xl font-bold text-blue-600">
+              ₹{total.toFixed(2)}
+            </h2>
+          </div>
+
+          <button
+            onClick={handleOrder}
+            disabled={cart.length === 0}
+            className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400"
+          >
+            Place Order
+          </button>
+        </div>
       </div>
-
-      <button onClick={handleOrder} disabled={cart.length === 0}>
-        Place Order
-      </button>
     </div>
   );
 }

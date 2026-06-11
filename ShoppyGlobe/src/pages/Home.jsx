@@ -2,16 +2,26 @@ import ProductCard from "../components/ProductCard";
 import useProducts from "../hooks/useProducts";
 import { useSelector } from "react-redux";
 
+// Main page of the app where all the products are being listed
+
 function Home() {
+  // Get search term from Redux store
   const searchTerm = useSelector((state) => state.search);
+
+  // Fetch products using custom hook
   const { products, loading, error } = useProducts();
+
+  // Filter products based on search term
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
+  // Display loading state while fetching products
   if (loading) {
     return <h1>Loading...</h1>;
   }
+
+  // Display error message if API call fails
   if (error) {
     return <h1>{error}</h1>;
   }
