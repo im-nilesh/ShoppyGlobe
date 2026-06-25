@@ -49,3 +49,8 @@
 
 All APIs were tested using Thunder Client / Postman.
 Screenshots are included in the submission.
+
+## Github Project Link
+
+Github link Entire project : https://github.com/im-nilesh/ShoppyGlobe
+Github backend project link : https://github.com/im-nilesh/ShoppyGlobe/tree/main/ShoppyGlobe/backend
