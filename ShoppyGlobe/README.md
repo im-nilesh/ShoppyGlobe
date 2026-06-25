@@ -75,7 +75,7 @@ The project is built using React, Redux Toolkit, React Router, Tailwind CSS, and
 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_LINK
+git clone https://github.com/im-nilesh/ShoppyGlobe
 ```
 
 2. Navigate to the project folder
@@ -141,6 +141,8 @@ https://dummyjson.com/products
 ## GitHub Repository
 
 Repository Link:
+
+https://github.com/im-nilesh/ShoppyGlobe
 
 ---
 
