@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import api from "../services/api";
 function useProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,11 +9,8 @@ function useProducts() {
     async function fetchProducts() {
       try {
         // Fetch products from DummyJSON API
-        const response = await fetch("https://dummyjson.com/products");
-
-        const data = await response.json();
-        // Update products state with API response
-        setProducts(data.products);
+        const response = await api.get("/products");
+        setProducts(response.data.products);
       } catch (error) {
         // Handle API errors
         setError(error.message);
