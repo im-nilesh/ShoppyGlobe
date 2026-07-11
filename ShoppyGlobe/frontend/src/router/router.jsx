@@ -8,6 +8,7 @@ const ProductDetail = lazy(() => import("../pages/ProductDetail"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 import Layout from "../components/Layout";
+import Register from "../components/Register";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "*",
         element: <NotFound />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },
