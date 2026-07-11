@@ -6,9 +6,10 @@ const Cart = lazy(() => import("../pages/Cart"));
 const Checkout = lazy(() => import("../pages/Checkout"));
 const ProductDetail = lazy(() => import("../pages/ProductDetail"));
 const NotFound = lazy(() => import("../pages/NotFound"));
+const Login = lazy(() => import("../components/Login"));
+const Register = lazy(() => import("../components/Register"));
 
 import Layout from "../components/Layout";
-import Register from "../components/Register";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
     ],
   },
