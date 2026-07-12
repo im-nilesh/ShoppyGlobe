@@ -21,64 +21,76 @@ function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
-      <nav className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-        <Link to="/" className="text-3xl font-bold text-blue-600">
-          ShoppyGlobe
+    <header className="sticky top-0 z-50 backdrop-blur-lg bg-black/40 border-b border-zinc-800">
+      <nav className="max-w-7xl mx-auto px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-5">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-3xl font-bold text-white hover:text-blue-400 transition"
+        >
+          Shoppy<span className="text-blue-500">Globe</span>
         </Link>
 
+        {/* Search */}
         <input
           type="text"
           placeholder="Search products..."
-          className="w-full md:w-96 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+          className="w-full lg:w-96 bg-zinc-900 border border-zinc-700 text-white rounded-xl px-5 py-3 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        <div className="flex items-center gap-6 font-medium">
-          <Link to="/" className="hover:text-blue-600 transition">
+        {/* Navigation */}
+        <div className="flex flex-wrap items-center justify-center gap-5 text-white font-medium">
+          <Link to="/" className="hover:text-blue-400 transition">
             Home
           </Link>
 
           {user && (
-            <Link
-              to="/cart"
-              className="relative hover:text-blue-600 transition"
-            >
-              Cart
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-5 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-          )}
+            <>
+              <Link to="/orders" className="hover:text-blue-400 transition">
+                My Orders
+              </Link>
 
-          {user && (
-            <Link to="/checkout" className="hover:text-blue-600 transition">
-              Checkout
-            </Link>
+              <Link
+                to="/cart"
+                className="relative hover:text-blue-400 transition"
+              >
+                Cart
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-5 bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </Link>
+
+              <Link to="/checkout" className="hover:text-blue-400 transition">
+                Checkout
+              </Link>
+            </>
           )}
 
           {!user ? (
             <>
-              <Link to="/login" className="hover:text-blue-600 transition">
+              <Link to="/login" className="hover:text-blue-400 transition">
                 Login
               </Link>
 
               <Link
                 to="/register"
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                className="bg-blue-600 hover:bg-blue-700 transition px-5 py-2 rounded-xl"
               >
                 Register
               </Link>
             </>
           ) : (
             <>
-              <span className="text-gray-700">Hi, {user.name}</span>
+              <span className="text-zinc-300">
+                Hi, <span className="font-semibold">{user.name}</span>
+              </span>
 
               <button
                 onClick={handleLogout}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition cursor-pointer"
+                className="bg-red-500 hover:bg-red-600 transition px-5 py-2 rounded-xl cursor-pointer"
               >
                 Logout
               </button>

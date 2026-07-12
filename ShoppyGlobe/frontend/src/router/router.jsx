@@ -5,6 +5,7 @@ import ProtectedRoute from "../components/ProtectedRoutes";
 const Home = lazy(() => import("../pages/Home"));
 const Cart = lazy(() => import("../pages/Cart"));
 const Checkout = lazy(() => import("../pages/Checkout"));
+const Orders = lazy(() => import("../pages/Order"));
 const ProductDetail = lazy(() => import("../pages/ProductDetail"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Login = lazy(() => import("../components/Login"));
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
             path: "/checkout",
             element: <Checkout />,
           },
+          {
+            path: "/orders",
+            element: <Orders />,
+          },
         ],
       },
 
@@ -57,4 +62,5 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
 export default router;
