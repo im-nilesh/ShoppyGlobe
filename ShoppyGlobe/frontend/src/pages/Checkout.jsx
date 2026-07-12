@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { placeOrder } from "../services/orderServices";
+import { createPaymentOrder, verifyPayment } from "../services/paymentService";
 
 function Checkout() {
   const { cartItems, fetchCart } = useCart();
@@ -16,7 +16,7 @@ function Checkout() {
     return acc + item.product.price * item.quantity;
   }, 0);
 
-  async function handleOrder() {
+  async function handlePayment() {
     if (!name.trim() || !email.trim() || !address.trim()) {
       return alert("Please fill all the fields");
     }
@@ -25,20 +25,70 @@ function Checkout() {
       setPlacing(true);
 
       const shippingAddress = `${name} (${email})\n${address}`;
-      const response = await placeOrder(shippingAddress);
 
-      alert(response.message || "Order Placed");
+      // Create Razorpay Order
+      const orderResponse = await createPaymentOrder(shippingAddress);
 
-      // Cart is cleared server-side once the order is placed;
-      // refresh local cart state so the header badge updates too.
-      await fetchCart();
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
 
-      navigate("/");
+        amount: orderResponse.razorpayOrder.amount,
+
+        currency: orderResponse.razorpayOrder.currency,
+
+        name: "ShoppyGlobe",
+
+        description: "Order Payment",
+
+        order_id: orderResponse.razorpayOrder.id,
+
+        prefill: {
+          name,
+          email,
+        },
+
+        theme: {
+          color: "#2563EB",
+        },
+
+        handler: async function (response) {
+          try {
+            const verifyResponse = await verifyPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              shippingAddress,
+            });
+
+            alert(verifyResponse.message);
+
+            await fetchCart();
+
+            navigate("/");
+          } catch (error) {
+            alert(
+              error.response?.data?.message ||
+                error.message ||
+                "Payment Verification Failed",
+            );
+          }
+        },
+
+        modal: {
+          ondismiss() {
+            alert("Payment Cancelled");
+          },
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+
+      razorpay.open();
     } catch (error) {
       alert(
         error.response?.data?.message ||
           error.message ||
-          "Failed to place order",
+          "Unable to initiate payment",
       );
     } finally {
       setPlacing(false);
@@ -50,7 +100,6 @@ function Checkout() {
       <h1 className="text-4xl font-bold mb-8">Checkout</h1>
 
       <div className="grid lg:grid-cols-2 gap-8">
-        {/* Customer Details */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold mb-6">Customer Details</h2>
 
@@ -60,7 +109,7 @@ function Checkout() {
               placeholder="Enter Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg p-3"
             />
 
             <input
@@ -68,57 +117,46 @@ function Checkout() {
               placeholder="Enter Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg p-3"
             />
 
             <textarea
+              rows="5"
               placeholder="Enter Address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              rows="5"
-              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg p-3"
             />
           </div>
         </div>
 
-        {/* Order Summary */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
 
-          {cartItems.length === 0 ? (
-            <h3 className="text-gray-500">Your Cart is Empty</h3>
-          ) : (
-            <div className="space-y-4">
-              {cartItems.map((item) => (
-                <div key={item._id} className="border-b pb-4">
-                  <h4 className="font-semibold">{item.product.name}</h4>
+          {cartItems.map((item) => (
+            <div key={item._id} className="border-b py-3">
+              <h3 className="font-semibold">{item.product.name}</h3>
 
-                  <p className="text-gray-600">Price: ₹{item.product.price}</p>
+              <p>₹{item.product.price}</p>
 
-                  <p className="text-gray-600">Quantity: {item.quantity}</p>
+              <p>Qty : {item.quantity}</p>
 
-                  <p className="font-medium">
-                    Subtotal: ₹{item.product.price * item.quantity}
-                  </p>
-                </div>
-              ))}
+              <p>₹{item.product.price * item.quantity}</p>
             </div>
-          )}
+          ))}
 
-          <div className="border-t mt-6 pt-6 flex justify-between items-center">
-            <h2 className="text-2xl font-bold">Total</h2>
+          <div className="flex justify-between mt-6 text-2xl font-bold">
+            <span>Total</span>
 
-            <h2 className="text-3xl font-bold text-blue-600">
-              ₹{total.toFixed(2)}
-            </h2>
+            <span>₹{total}</span>
           </div>
 
           <button
-            onClick={handleOrder}
-            disabled={cartItems.length === 0 || placing}
-            className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 cursor-pointer"
+            onClick={handlePayment}
+            disabled={placing || cartItems.length === 0}
+            className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
           >
-            {placing ? "Placing Order..." : "Place Order"}
+            {placing ? "Processing..." : "Pay with Razorpay"}
           </button>
         </div>
       </div>
