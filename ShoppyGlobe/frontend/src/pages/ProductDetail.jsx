@@ -52,7 +52,7 @@ function ProductDetail() {
         {/* Product Image */}
         <div className="glass rounded-3xl p-10 flex justify-center items-center">
           <img
-            src="https://placehold.co/500x500?text=Product"
+            src={product.image}
             alt={product.name}
             loading="lazy"
             className="w-full max-w-md object-contain transition duration-300 hover:scale-105"

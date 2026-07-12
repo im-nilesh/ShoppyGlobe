@@ -36,7 +36,7 @@ function ProductCard({ product }) {
       <Link to={`/product/${product._id}`}>
         <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-8 flex justify-center items-center">
           <img
-            src="https://placehold.co/300x250?text=Product"
+            src={product.image}
             alt={product.name}
             loading="lazy"
             className="h-48 object-contain transition duration-300 group-hover:scale-105"
