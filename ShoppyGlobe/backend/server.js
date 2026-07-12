@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 dotenv.config();
 
@@ -14,11 +15,11 @@ connectDB();
 
 const app = express();
 
-// middleware
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// test route
+// Test Route
 app.get("/", (req, res) => {
   res.json({
     success: true,
@@ -26,12 +27,13 @@ app.get("/", (req, res) => {
   });
 });
 
-// routes
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
 
-// 404 route handler
+// 404 Route Handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
