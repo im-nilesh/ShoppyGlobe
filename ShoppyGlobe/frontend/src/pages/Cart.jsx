@@ -1,25 +1,48 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { clearCart } from "../redux/cartSlice";
 import CartItem from "../components/CartItem";
+import { getCartItems } from "../services/cartServices";
 
 function Cart() {
-  // Get cart items from Redux store
-  const cart = useSelector((state) => state.cart);
-  // console.log(cart);
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const dispatch = useDispatch();
+  async function fetchCart() {
+    try {
+      const response = await getCartItems();
+      setCartItems(response.cartItems);
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to fetch cart",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
 
-  // Calculate total cart value
-  const total = cart.reduce((acc, product) => {
-    return acc + product.price * product.quantity;
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const total = cartItems.reduce((acc, item) => {
+    return acc + item.product.price * item.quantity;
   }, 0);
+
+  if (loading) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8">Shopping Cart</h1>
 
-      {cart.length === 0 ? (
+      {cartItems.length === 0 ? (
         <div className="bg-white rounded-xl shadow-md p-10 text-center">
           <h2 className="text-2xl font-semibold text-gray-600">
             Your cart is empty
@@ -33,35 +56,27 @@ function Cart() {
         </div>
       ) : (
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Cart Items */}
           <div className="lg:col-span-2">
-            {cart.map((product) => {
-              return <CartItem key={product.id} product={product} />;
-            })}
+            {cartItems.map((item) => (
+              <CartItem key={item._id} item={item} fetchCart={fetchCart} />
+            ))}
           </div>
 
-          {/* Order Summary */}
           <div className="bg-white rounded-xl shadow-md p-6 h-fit sticky top-24">
             <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+
             <div className="flex justify-between mb-4">
               <span>Total Items</span>
-              <span>{cart.length}</span>
+              <span>{cartItems.length}</span>
             </div>
+
             <div className="border-t pt-4 flex justify-between text-xl font-bold">
               <span>Total</span>
               <span className="text-blue-600">₹{total.toFixed(2)}</span>
             </div>
-            {/* Clear all products from cart */}
-            <button
-              onClick={() => {
-                dispatch(clearCart());
-              }}
-              className="w-full mt-6 bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition"
-            >
-              Clear Cart
-            </button>
+
             <Link to="/checkout">
-              <button className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
+              <button className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
                 Proceed To Checkout
               </button>
             </Link>
@@ -71,4 +86,5 @@ function Cart() {
     </div>
   );
 }
+
 export default Cart;

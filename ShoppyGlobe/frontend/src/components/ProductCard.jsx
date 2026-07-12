@@ -1,9 +1,20 @@
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/cartSlice";
+import { addToCart } from "../services/cartServices";
 
 function ProductCard({ product }) {
-  const dispatch = useDispatch();
+  async function handleAddToCart() {
+    try {
+      await addToCart(product._id, 1);
+
+      alert("Product added to cart");
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to add product",
+      );
+    }
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col">
@@ -36,7 +47,7 @@ function ProductCard({ product }) {
 
       <div className="p-4 pt-0">
         <button
-          onClick={() => dispatch(addToCart(product))}
+          onClick={handleAddToCart}
           className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition cursor-pointer"
         >
           Add To Cart

@@ -1,14 +1,31 @@
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import { setSearchTerm } from "../redux/searchSlice";
+import { getCartItems } from "../services/cartServices";
 
 function Header() {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
 
-  const totalItems = cart.reduce((acc, item) => {
-    return acc + item.quantity;
-  }, 0);
+  const [totalItems, setTotalItems] = useState(0);
+
+  async function fetchCartCount() {
+    try {
+      const response = await getCartItems();
+
+      const count = response.cartItems.reduce((acc, item) => {
+        return acc + item.quantity;
+      }, 0);
+
+      setTotalItems(count);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchCartCount();
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md">
