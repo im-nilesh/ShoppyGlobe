@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { setSearchTerm } from "../redux/searchSlice";
@@ -6,10 +6,21 @@ import { getCartItems } from "../services/cartServices";
 
 function Header() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [totalItems, setTotalItems] = useState(0);
 
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
   async function fetchCartCount() {
+    if (!localStorage.getItem("token")) {
+      setTotalItems(0);
+      return;
+    }
+
     try {
       const response = await getCartItems();
 
@@ -21,6 +32,16 @@ function Header() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    setUser(null);
+    setTotalItems(0);
+
+    navigate("/login");
   }
 
   useEffect(() => {
@@ -40,9 +61,7 @@ function Header() {
           type="text"
           placeholder="Search products..."
           className="w-full md:w-96 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onChange={(e) => {
-            dispatch(setSearchTerm(e.target.value));
-          }}
+          onChange={(e) => dispatch(setSearchTerm(e.target.value))}
         />
 
         {/* Navigation */}
@@ -51,21 +70,51 @@ function Header() {
             Home
           </Link>
 
-          <Link to="/checkout" className="hover:text-blue-600 transition">
-            Checkout
-          </Link>
+          {user && (
+            <Link
+              to="/cart"
+              className="relative hover:text-blue-600 transition"
+            >
+              Cart
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-5 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+          )}
 
-          <Link
-            to="/cart"
-            className="relative bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            Cart
-            {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                {totalItems}
-              </span>
-            )}
-          </Link>
+          {user && (
+            <Link to="/checkout" className="hover:text-blue-600 transition">
+              Checkout
+            </Link>
+          )}
+
+          {!user ? (
+            <>
+              <Link to="/login" className="hover:text-blue-600 transition">
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+              >
+                Register
+              </Link>
+            </>
+          ) : (
+            <>
+              <span className="text-gray-700">Hi, {user.name}</span>
+
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition cursor-pointer"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </div>
       </nav>
     </header>

@@ -1,13 +1,13 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { loginUser } from "../services/authServices";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   async function handleLogin(e) {
@@ -30,7 +30,9 @@ export default function Login() {
 
       alert(response.message);
 
-      navigate("/");
+      // Redirect to the page user originally wanted,
+      // otherwise go to Home.
+      navigate(location.state?.from?.pathname || "/");
     } catch (error) {
       alert(error.response?.data?.message || error.message || "Login Failed");
     } finally {
