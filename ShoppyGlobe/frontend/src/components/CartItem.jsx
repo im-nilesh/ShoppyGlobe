@@ -13,9 +13,7 @@ function CartItem({ item, fetchCart }) {
   }
 
   async function handleDecrement() {
-    if (quantity === 1) {
-      return;
-    }
+    if (quantity === 1) return;
 
     try {
       await updateCartItem(_id, quantity - 1);
@@ -35,53 +33,66 @@ function CartItem({ item, fetchCart }) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 mb-4 flex flex-col md:flex-row items-center gap-6">
-      <img
-        src="https://placehold.co/150x150?text=Product"
-        alt={product.name}
-        className="w-32 h-32 object-contain"
-      />
+    <div className="glass rounded-3xl p-6 flex flex-col lg:flex-row gap-6 items-center transition-all duration-300 hover:border-blue-500/30">
+      {/* Image */}
+      <div className="flex-shrink-0 bg-slate-900 rounded-2xl p-5">
+        <img
+          src="https://placehold.co/150x150?text=Product"
+          alt={product.name}
+          className="w-32 h-32 object-contain"
+        />
+      </div>
 
-      <div className="flex-1">
-        <h2 className="text-xl font-semibold">{product.name}</h2>
+      {/* Product Details */}
+      <div className="flex-1 w-full">
+        <h2 className="text-2xl font-semibold text-white">{product.name}</h2>
 
-        <p className="text-gray-500 mt-2">{product.description}</p>
-
-        <h3 className="text-blue-600 font-bold text-lg mt-3">
-          ₹{product.price}
-        </h3>
-
-        <p className="text-gray-500 mt-2">
-          Subtotal ₹{product.price * quantity}
+        <p className="text-slate-400 mt-3 line-clamp-2">
+          {product.description}
         </p>
+
+        <div className="flex flex-wrap items-center gap-5 mt-5">
+          <span className="text-2xl font-bold text-blue-400">
+            ₹{product.price}
+          </span>
+
+          <span className="text-slate-500">Qty: {quantity}</span>
+
+          <span className="text-emerald-400 font-medium">
+            Subtotal ₹{(product.price * quantity).toFixed(2)}
+          </span>
+        </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <button
-          onClick={handleDecrement}
-          className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300"
-        >
-          -
-        </button>
+      {/* Controls */}
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex items-center rounded-xl bg-white/5 border border-white/10 overflow-hidden">
+          <button
+            onClick={handleDecrement}
+            className="w-11 h-11 text-xl text-white hover:bg-white/10 transition cursor-pointer"
+          >
+            −
+          </button>
 
-        <span className="text-lg font-semibold w-8 text-center">
-          {quantity}
-        </span>
+          <span className="w-12 text-center text-white font-semibold">
+            {quantity}
+          </span>
+
+          <button
+            onClick={handleIncrement}
+            className="w-11 h-11 text-xl text-white hover:bg-white/10 transition cursor-pointer"
+          >
+            +
+          </button>
+        </div>
 
         <button
-          onClick={handleIncrement}
-          className="w-10 h-10 rounded-lg bg-gray-200 hover:bg-gray-300"
+          onClick={handleDelete}
+          className="w-full rounded-xl bg-red-500/90 hover:bg-red-600 transition py-2 px-5 text-white font-medium cursor-pointer"
         >
-          +
+          Remove
         </button>
       </div>
-
-      <button
-        onClick={handleDelete}
-        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-      >
-        Remove
-      </button>
     </div>
   );
 }

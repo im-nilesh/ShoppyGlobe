@@ -47,37 +47,53 @@ function ProductDetail() {
     return <h2>{error}</h2>;
   }
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <div className="bg-white rounded-2xl shadow-lg overflow-hidden md:flex">
-        <div className="md:w-1/2 bg-gray-50 flex items-center justify-center">
+    <div className="max-w-7xl mx-auto py-12">
+      <div className="grid lg:grid-cols-2 gap-10 items-center">
+        {/* Product Image */}
+        <div className="glass rounded-3xl p-10 flex justify-center items-center">
           <img
             src="https://placehold.co/500x500?text=Product"
             alt={product.name}
             loading="lazy"
-            className="w-full h-96 object-contain p-8"
+            className="w-full max-w-md object-contain transition duration-300 hover:scale-105"
           />
         </div>
 
-        <div className="md:w-1/2 p-8 flex flex-col justify-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            {product.name}
-          </h1>
+        {/* Product Info */}
+        <div className="glass rounded-3xl p-10">
+          <span className="inline-block px-4 py-1 rounded-full bg-blue-500/15 text-blue-400 text-sm font-medium">
+            Premium Product
+          </span>
 
-          <h2 className="text-3xl font-bold text-blue-600 mb-6">
-            ₹{product.price}
-          </h2>
+          <h1 className="text-5xl font-bold text-white mt-5">{product.name}</h1>
 
-          <p className="text-gray-600 leading-relaxed mb-8">
-            {product.description}
-          </p>
+          <p className="mt-6 text-slate-400 leading-8">{product.description}</p>
 
-          <p className="text-gray-500 mb-6">
-            Stock Available : {product.stockQuantity}
-          </p>
+          <div className="mt-8 flex items-center gap-6">
+            <h2 className="text-4xl font-bold text-blue-400">
+              ₹{product.price}
+            </h2>
+
+            <span className="px-4 py-2 rounded-full bg-emerald-500/15 text-emerald-400 text-sm">
+              {product.stockQuantity} In Stock
+            </span>
+          </div>
 
           <button
             onClick={handleAddToCart}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition w-fit cursor-pointer"
+            className="
+            mt-10
+            px-8
+            py-4
+            rounded-2xl
+            bg-blue-600
+            hover:bg-blue-500
+            transition
+            font-semibold
+            text-white
+            cursor-pointer
+            shadow-lg
+        "
           >
             Add To Cart
           </button>

@@ -11,9 +11,7 @@ function Header() {
   const { cartItems } = useCart();
   const { user, logout } = useAuth();
 
-  const totalItems = cartItems.reduce((acc, item) => {
-    return acc + item.quantity;
-  }, 0);
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   function handleLogout() {
     logout();
@@ -21,49 +19,58 @@ function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-lg bg-black/40 border-b border-zinc-800">
-      <nav className="max-w-7xl mx-auto px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-5">
+    <header className="sticky top-0 z-50 px-4 pt-4">
+      <nav className="glass max-w-7xl mx-auto h-20 px-8 flex items-center gap-8">
         {/* Logo */}
-        <Link
-          to="/"
-          className="text-3xl font-bold text-white hover:text-blue-400 transition"
-        >
-          Shoppy<span className="text-blue-500">Globe</span>
+        <Link to="/" className="text-3xl font-extrabold whitespace-nowrap">
+          <span className="text-white">Shoppy</span>
+          <span className="text-blue-500">Globe</span>
         </Link>
 
         {/* Search */}
-        <input
-          type="text"
-          placeholder="Search products..."
-          onChange={(e) => dispatch(setSearchTerm(e.target.value))}
-          className="w-full lg:w-96 bg-zinc-900 border border-zinc-700 text-white rounded-xl px-5 py-3 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <div className="flex-1 max-w-2xl">
+          <input
+            type="text"
+            placeholder="Search products..."
+            onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+            className="w-full input-dark"
+          />
+        </div>
 
         {/* Navigation */}
-        <div className="flex flex-wrap items-center justify-center gap-5 text-white font-medium">
-          <Link to="/" className="hover:text-blue-400 transition">
+        <div className="flex items-center gap-3 ml-auto">
+          <Link
+            to="/"
+            className="px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition"
+          >
             Home
           </Link>
 
           {user && (
             <>
-              <Link to="/orders" className="hover:text-blue-400 transition">
-                My Orders
+              <Link
+                to="/orders"
+                className="px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition whitespace-nowrap"
+              >
+                Orders
               </Link>
 
               <Link
                 to="/cart"
-                className="relative hover:text-blue-400 transition"
+                className="relative px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition"
               >
                 Cart
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-5 bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-blue-600 text-xs flex items-center justify-center">
                     {totalItems}
                   </span>
                 )}
               </Link>
 
-              <Link to="/checkout" className="hover:text-blue-400 transition">
+              <Link
+                to="/checkout"
+                className="px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition whitespace-nowrap"
+              >
                 Checkout
               </Link>
             </>
@@ -71,26 +78,26 @@ function Header() {
 
           {!user ? (
             <>
-              <Link to="/login" className="hover:text-blue-400 transition">
+              <Link
+                to="/login"
+                className="px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition"
+              >
                 Login
               </Link>
 
-              <Link
-                to="/register"
-                className="bg-blue-600 hover:bg-blue-700 transition px-5 py-2 rounded-xl"
-              >
+              <Link to="/register" className="btn-primary">
                 Register
               </Link>
             </>
           ) : (
             <>
-              <span className="text-zinc-300">
+              <div className="glass-light px-4 py-2 rounded-xl whitespace-nowrap">
                 Hi, <span className="font-semibold">{user.name}</span>
-              </span>
+              </div>
 
               <button
                 onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-600 transition px-5 py-2 rounded-xl cursor-pointer"
+                className="px-5 py-2 rounded-xl bg-red-500 hover:bg-red-600 transition text-white cursor-pointer"
               >
                 Logout
               </button>

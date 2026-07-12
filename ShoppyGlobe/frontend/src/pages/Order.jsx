@@ -37,7 +37,7 @@ function Orders() {
       <h1 className="text-4xl font-bold text-white mb-8">My Orders</h1>
 
       {orders.length === 0 ? (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-12 text-center">
+        <div className="glass rounded-3xl p-12">
           <h2 className="text-2xl text-zinc-300 font-semibold">
             No Orders Yet
           </h2>
@@ -49,10 +49,7 @@ function Orders() {
       ) : (
         <div className="space-y-6">
           {orders.map((order) => (
-            <div
-              key={order._id}
-              className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-lg"
-            >
+            <div key={order._id} className="glass rounded-3xl p-8">
               <div className="flex flex-col md:flex-row justify-between md:items-center gap-5">
                 <div>
                   <h2 className="text-xl font-bold text-white">

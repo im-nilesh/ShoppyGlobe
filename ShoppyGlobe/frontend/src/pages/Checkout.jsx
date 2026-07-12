@@ -96,65 +96,103 @@ function Checkout() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8">Checkout</h1>
+    <div className="max-w-7xl mx-auto py-10">
+      <div className="mb-10">
+        <h1 className="text-5xl font-bold text-white">Checkout</h1>
+
+        <p className="text-slate-400 mt-2">
+          Complete your purchase securely with Razorpay.
+        </p>
+      </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-6">Customer Details</h2>
+        {/* Customer Details */}
 
-          <div className="space-y-4">
+        <div className="glass rounded-3xl p-8">
+          <h2 className="text-2xl font-semibold text-white mb-8">
+            Customer Details
+          </h2>
+
+          <div className="space-y-5">
             <input
               type="text"
-              placeholder="Enter Name"
+              placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border rounded-lg p-3"
+              className="input-dark"
             />
 
             <input
               type="email"
-              placeholder="Enter Email"
+              placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border rounded-lg p-3"
+              className="input-dark"
             />
 
             <textarea
-              rows="5"
-              placeholder="Enter Address"
+              rows="6"
+              placeholder="Shipping Address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="w-full border rounded-lg p-3"
+              className="input-dark resize-none"
             />
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+        {/* Summary */}
 
-          {cartItems.map((item) => (
-            <div key={item._id} className="border-b py-3">
-              <h3 className="font-semibold">{item.product.name}</h3>
+        <div className="glass rounded-3xl p-8 h-fit sticky top-28">
+          <h2 className="text-2xl font-semibold text-white mb-8">
+            Order Summary
+          </h2>
 
-              <p>₹{item.product.price}</p>
+          <div className="space-y-5">
+            {cartItems.map((item) => (
+              <div
+                key={item._id}
+                className="flex justify-between items-center border-b border-white/10 pb-4"
+              >
+                <div>
+                  <h3 className="text-white font-medium">
+                    {item.product.name}
+                  </h3>
 
-              <p>Qty : {item.quantity}</p>
+                  <p className="text-slate-500 text-sm">Qty: {item.quantity}</p>
+                </div>
 
-              <p>₹{item.product.price * item.quantity}</p>
-            </div>
-          ))}
+                <span className="text-blue-400 font-semibold">
+                  ₹{item.product.price * item.quantity}
+                </span>
+              </div>
+            ))}
+          </div>
 
-          <div className="flex justify-between mt-6 text-2xl font-bold">
-            <span>Total</span>
+          <div className="border-t border-white/10 mt-8 pt-6 flex justify-between items-center">
+            <span className="text-xl text-white font-semibold">Total</span>
 
-            <span>₹{total}</span>
+            <span className="text-3xl font-bold text-blue-400">
+              ₹{total.toFixed(2)}
+            </span>
           </div>
 
           <button
             onClick={handlePayment}
             disabled={placing || cartItems.length === 0}
-            className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
+            className="
+            w-full
+            mt-8
+            py-4
+            rounded-2xl
+            bg-blue-600
+            hover:bg-blue-500
+            disabled:opacity-50
+            disabled:cursor-not-allowed
+            transition
+            font-semibold
+            text-white
+            cursor-pointer
+          "
           >
             {placing ? "Processing..." : "Pay with Razorpay"}
           </button>

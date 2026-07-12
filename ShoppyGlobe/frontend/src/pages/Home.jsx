@@ -2,39 +2,60 @@ import ProductCard from "../components/ProductCard";
 import useProducts from "../hooks/useProducts";
 import { useSelector } from "react-redux";
 
-// Main page of the app where all the products are being listed
-
 function Home() {
-  // Get search term from Redux store
   const searchTerm = useSelector((state) => state.search);
 
-  // Fetch products using custom hook
   const { products, loading, error } = useProducts();
 
-  // Filter products based on search term
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  // Display loading state while fetching products
   if (loading) {
-    return <h1>Loading...</h1>;
-  }
-
-  // Display error message if API call fails
-  if (error) {
-    return <h1>{error}</h1>;
-  }
-  return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-4xl font-bold mb-8">Home Page</h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => {
-          return <ProductCard key={product._id} product={product} />;
-        })}
+    return (
+      <div className="flex justify-center items-center h-[60vh]">
+        <div className="glass px-8 py-6">
+          <p className="text-slate-300 text-lg">Loading Products...</p>
+        </div>
       </div>
-    </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-[60vh]">
+        <div className="glass px-8 py-6 border border-red-500/30">
+          <p className="text-red-400">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <section className="max-w-7xl mx-auto">
+      {/* Hero */}
+      <div className="mb-12">
+        <p className="text-blue-400 uppercase tracking-[0.3em] text-sm mb-2">
+          Welcome to
+        </p>
+
+        <h1 className="text-5xl font-bold text-white">
+          Shoppy<span className="text-blue-500">Globe</span>
+        </h1>
+
+        <p className="text-slate-400 mt-4 max-w-2xl">
+          Discover premium products with a clean shopping experience.
+        </p>
+      </div>
+
+      {/* Products */}
+      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {filteredProducts.map((product) => (
+          <ProductCard key={product._id} product={product} />
+        ))}
+      </div>
+    </section>
   );
 }
+
 export default Home;

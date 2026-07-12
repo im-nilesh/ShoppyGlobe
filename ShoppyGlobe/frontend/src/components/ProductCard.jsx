@@ -7,7 +7,6 @@ function ProductCard({ product }) {
   async function handleAddToCart() {
     try {
       await addToCart(product._id);
-
       alert("Product added to cart");
     } catch (error) {
       alert(
@@ -19,40 +18,68 @@ function ProductCard({ product }) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col">
-      <Link to={`/product/${product._id}`} className="flex flex-col grow">
-        <img
-          src="https://placehold.co/300x250?text=Product"
-          alt={product.name}
-          loading="lazy"
-          className="w-full h-52 object-contain p-6"
-        />
+    <div
+      className="
+        group
+        rounded-3xl
+        overflow-hidden
+        bg-white/5
+        backdrop-blur-xl
+        border border-white/10
+        hover:border-blue-500/40
+        transition-all
+        duration-300
+        hover:-translate-y-2
+        hover:shadow-[0_20px_50px_rgba(59,130,246,.15)]
+      "
+    >
+      <Link to={`/product/${product._id}`}>
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-8 flex justify-center items-center">
+          <img
+            src="https://placehold.co/300x250?text=Product"
+            alt={product.name}
+            loading="lazy"
+            className="h-48 object-contain transition duration-300 group-hover:scale-105"
+          />
+        </div>
 
-        <div className="p-4 grow">
-          <h2 className="text-lg font-semibold text-gray-800 line-clamp-2">
+        <div className="p-5">
+          <h2 className="text-lg font-semibold text-white line-clamp-2">
             {product.name}
           </h2>
 
-          <p className="text-gray-500 text-sm mt-2 line-clamp-2">
+          <p className="mt-3 text-sm text-slate-400 line-clamp-2">
             {product.description}
           </p>
 
-          <h3 className="text-2xl font-bold text-blue-600 mt-3">
-            ₹{product.price}
-          </h3>
+          <div className="mt-5 flex items-center justify-between">
+            <span className="text-2xl font-bold text-blue-400">
+              ₹{product.price}
+            </span>
 
-          <p className="text-sm text-gray-500 mt-1">
-            Stock: {product.stockQuantity}
-          </p>
+            <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400">
+              {product.stockQuantity} in stock
+            </span>
+          </div>
         </div>
       </Link>
 
-      <div className="p-4 pt-0">
+      <div className="px-5 pb-5">
         <button
           onClick={handleAddToCart}
-          className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition cursor-pointer"
+          className="
+            w-full
+            py-3
+            rounded-xl
+            font-semibold
+            bg-blue-600
+            hover:bg-blue-500
+            text-white
+            transition
+            cursor-pointer
+          "
         >
-          Add To Cart
+          Add to Cart
         </button>
       </div>
     </div>

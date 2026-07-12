@@ -11,12 +11,22 @@ import router from "./router/router.jsx";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 
+const LoadingScreen = () => (
+  <div className="min-h-screen flex items-center justify-center bg-[#09090b]">
+    <div className="glass px-10 py-8 text-center">
+      <div className="h-10 w-10 mx-auto rounded-full border-4 border-blue-500 border-t-transparent animate-spin"></div>
+
+      <p className="mt-5 text-slate-300 text-lg font-medium">Loading...</p>
+    </div>
+  </div>
+);
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <AuthProvider>
         <CartProvider>
-          <Suspense fallback={<h1>Loading...</h1>}>
+          <Suspense fallback={<LoadingScreen />}>
             <RouterProvider router={router} />
           </Suspense>
         </CartProvider>

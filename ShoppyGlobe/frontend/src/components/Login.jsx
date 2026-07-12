@@ -42,19 +42,21 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-center mb-2">Welcome Back</h1>
+    <div className="min-h-screen flex items-center justify-center px-6">
+      <div className="glass w-full max-w-md rounded-3xl p-10">
+        <h1 className="text-4xl font-bold text-white text-center">
+          Welcome Back
+        </h1>
 
-        <p className="text-center text-gray-500 mb-8">
-          Login to continue shopping
+        <p className="text-slate-400 text-center mt-3 mb-8">
+          Login to continue shopping.
         </p>
 
         <form onSubmit={handleLogin} className="space-y-5">
           <input
             type="email"
             placeholder="Email"
-            className="w-full border rounded-lg px-4 py-3"
+            className="input-dark"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -62,7 +64,7 @@ export default function Login() {
           <input
             type="password"
             placeholder="Password"
-            className="w-full border rounded-lg px-4 py-3"
+            className="input-dark"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -70,18 +72,15 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition disabled:bg-blue-400"
+            className="btn-primary w-full py-3 disabled:opacity-50"
           >
             {loading ? "Logging In..." : "Login"}
           </button>
         </form>
 
-        <p className="text-center mt-6">
+        <p className="text-center text-slate-400 mt-8">
           Don't have an account?{" "}
-          <Link
-            to="/register"
-            className="text-blue-600 font-medium hover:underline"
-          >
+          <Link to="/register" className="text-blue-400 hover:text-blue-300">
             Register
           </Link>
         </p>
