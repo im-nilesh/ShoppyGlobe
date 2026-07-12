@@ -1,29 +1,48 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { clearCart } from "../redux/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import { placeOrder } from "../services/orderServices";
 
 function Checkout() {
-  const cart = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+  const { cartItems, fetchCart } = useCart();
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [placing, setPlacing] = useState(false);
 
-  const total = cart.reduce((acc, product) => {
-    return acc + product.price * product.quantity;
+  const total = cartItems.reduce((acc, item) => {
+    return acc + item.product.price * item.quantity;
   }, 0);
 
-  function handleOrder() {
-    alert("Order Placed");
+  async function handleOrder() {
+    if (!name.trim() || !email.trim() || !address.trim()) {
+      return alert("Please fill all the fields");
+    }
 
-    dispatch(clearCart());
+    try {
+      setPlacing(true);
 
-    setTimeout(() => {
+      const shippingAddress = `${name} (${email})\n${address}`;
+      const response = await placeOrder(shippingAddress);
+
+      alert(response.message || "Order Placed");
+
+      // Cart is cleared server-side once the order is placed;
+      // refresh local cart state so the header badge updates too.
+      await fetchCart();
+
       navigate("/");
-    }, 1000);
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to place order",
+      );
+    } finally {
+      setPlacing(false);
+    }
   }
 
   return (
@@ -66,20 +85,20 @@ function Checkout() {
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
 
-          {cart.length === 0 ? (
+          {cartItems.length === 0 ? (
             <h3 className="text-gray-500">Your Cart is Empty</h3>
           ) : (
             <div className="space-y-4">
-              {cart.map((product) => (
-                <div key={product.id} className="border-b pb-4">
-                  <h4 className="font-semibold">{product.title}</h4>
+              {cartItems.map((item) => (
+                <div key={item._id} className="border-b pb-4">
+                  <h4 className="font-semibold">{item.product.name}</h4>
 
-                  <p className="text-gray-600">Price: ₹{product.price}</p>
+                  <p className="text-gray-600">Price: ₹{item.product.price}</p>
 
-                  <p className="text-gray-600">Quantity: {product.quantity}</p>
+                  <p className="text-gray-600">Quantity: {item.quantity}</p>
 
                   <p className="font-medium">
-                    Subtotal: ₹{product.price * product.quantity}
+                    Subtotal: ₹{item.product.price * item.quantity}
                   </p>
                 </div>
               ))}
@@ -96,10 +115,10 @@ function Checkout() {
 
           <button
             onClick={handleOrder}
-            disabled={cart.length === 0}
-            className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400"
+            disabled={cartItems.length === 0 || placing}
+            className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 cursor-pointer"
           >
-            Place Order
+            {placing ? "Placing Order..." : "Place Order"}
           </button>
         </div>
       </div>

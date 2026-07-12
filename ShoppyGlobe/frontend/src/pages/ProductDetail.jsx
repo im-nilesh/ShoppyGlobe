@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
+import { useCart } from "../context/CartContext";
 
 function ProductDetail() {
   const [product, setProduct] = useState(null);
@@ -8,6 +9,20 @@ function ProductDetail() {
   const [error, setError] = useState(null);
   // Extract product ID from URL parameters
   const { id } = useParams();
+  const { addToCart } = useCart();
+
+  async function handleAddToCart() {
+    try {
+      await addToCart(product._id);
+      alert("Product added to cart");
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to add product",
+      );
+    }
+  }
 
   // Fetch individual product details whenever ID changes
   useEffect(() => {
@@ -60,7 +75,10 @@ function ProductDetail() {
             Stock Available : {product.stockQuantity}
           </p>
 
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition w-fit">
+          <button
+            onClick={handleAddToCart}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition w-fit cursor-pointer"
+          >
             Add To Cart
           </button>
         </div>

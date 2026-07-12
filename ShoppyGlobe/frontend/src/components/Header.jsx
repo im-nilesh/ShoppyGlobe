@@ -2,28 +2,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setSearchTerm } from "../redux/searchSlice";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { cartItems } = useCart();
-  console.log("Header Render:", cartItems);
-
-  const storedUser = localStorage.getItem("user");
-  const user = storedUser ? JSON.parse(storedUser) : null;
+  const { user, logout } = useAuth();
 
   const totalItems = cartItems.reduce((acc, item) => {
     return acc + item.quantity;
   }, 0);
 
   function handleLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
+    logout();
     navigate("/login");
-
-    window.location.reload();
   }
 
   return (

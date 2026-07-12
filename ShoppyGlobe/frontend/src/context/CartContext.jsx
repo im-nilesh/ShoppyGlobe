@@ -5,17 +5,17 @@ import {
   updateCartItem,
   deleteCartItem,
 } from "../services/cartServices";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
+  const { user } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   async function fetchCart() {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
+    if (!user) {
       setCartItems([]);
       setLoading(false);
       return;
@@ -53,7 +53,8 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     fetchCart();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <CartContext.Provider

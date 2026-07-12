@@ -9,15 +9,18 @@ import { RouterProvider } from "react-router-dom";
 import router from "./router/router.jsx";
 
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <CartProvider>
-        <Suspense fallback={<h1>Loading...</h1>}>
-          <RouterProvider router={router} />
-        </Suspense>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <RouterProvider router={router} />
+          </Suspense>
+        </CartProvider>
+      </AuthProvider>
     </Provider>
   </StrictMode>,
 );
