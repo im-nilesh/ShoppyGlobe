@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { lazy } from "react";
+import ProtectedRoute from "../components/ProtectedRoutes";
 
 const Home = lazy(() => import("../pages/Home"));
 const Cart = lazy(() => import("../pages/Cart"));
@@ -8,7 +9,6 @@ const ProductDetail = lazy(() => import("../pages/ProductDetail"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Login = lazy(() => import("../components/Login"));
 const Register = lazy(() => import("../components/Register"));
-const ProtectedRoute = lazy(() => import("../components/ProtectedRoutes"));
 
 import Layout from "../components/Layout";
 

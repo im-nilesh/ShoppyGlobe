@@ -27,6 +27,7 @@ export default function Login() {
 
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
+      navigate(location.state?.from?.pathname || "/");
 
       alert(response.message);
 

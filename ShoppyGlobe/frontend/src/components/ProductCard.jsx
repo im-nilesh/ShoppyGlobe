@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
-import { addToCart } from "../services/cartServices";
+import { useCart } from "../context/CartContext";
 
 function ProductCard({ product }) {
+  const { addToCart } = useCart();
+
   async function handleAddToCart() {
     try {
-      await addToCart(product._id, 1);
+      await addToCart(product._id);
 
       alert("Product added to cart");
     } catch (error) {

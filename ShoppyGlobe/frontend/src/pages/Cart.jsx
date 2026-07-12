@@ -1,30 +1,9 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CartItem from "../components/CartItem";
-import { getCartItems } from "../services/cartServices";
+import { useCart } from "../context/CartContext";
 
 function Cart() {
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  async function fetchCart() {
-    try {
-      const response = await getCartItems();
-      setCartItems(response.cartItems);
-    } catch (error) {
-      alert(
-        error.response?.data?.message ||
-          error.message ||
-          "Failed to fetch cart",
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchCart();
-  }, []);
+  const { cartItems, loading, fetchCart } = useCart();
 
   const total = cartItems.reduce((acc, item) => {
     return acc + item.product.price * item.quantity;

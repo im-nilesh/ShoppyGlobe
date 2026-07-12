@@ -1,62 +1,38 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
 import { setSearchTerm } from "../redux/searchSlice";
-import { getCartItems } from "../services/cartServices";
+import { useCart } from "../context/CartContext";
 
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [totalItems, setTotalItems] = useState(0);
+  const { cartItems } = useCart();
+  console.log("Header Render:", cartItems);
 
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
 
-  async function fetchCartCount() {
-    if (!localStorage.getItem("token")) {
-      setTotalItems(0);
-      return;
-    }
-
-    try {
-      const response = await getCartItems();
-
-      const count = response.cartItems.reduce((acc, item) => {
-        return acc + item.quantity;
-      }, 0);
-
-      setTotalItems(count);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const totalItems = cartItems.reduce((acc, item) => {
+    return acc + item.quantity;
+  }, 0);
 
   function handleLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
 
-    setUser(null);
-    setTotalItems(0);
-
     navigate("/login");
-  }
 
-  useEffect(() => {
-    fetchCartCount();
-  }, []);
+    window.location.reload();
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md">
       <nav className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Logo */}
         <Link to="/" className="text-3xl font-bold text-blue-600">
           ShoppyGlobe
         </Link>
 
-        {/* Search */}
         <input
           type="text"
           placeholder="Search products..."
@@ -64,7 +40,6 @@ function Header() {
           onChange={(e) => dispatch(setSearchTerm(e.target.value))}
         />
 
-        {/* Navigation */}
         <div className="flex items-center gap-6 font-medium">
           <Link to="/" className="hover:text-blue-600 transition">
             Home
